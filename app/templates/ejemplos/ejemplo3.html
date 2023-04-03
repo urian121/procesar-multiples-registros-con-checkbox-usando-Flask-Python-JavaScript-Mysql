@@ -1,0 +1,107 @@
+{% extends 'index.html' %} {% block body %}
+
+<h4 class="text-center mt-5">
+  Lista de Personas
+
+  <button
+    style="float: right"
+    onclick="procesarPersonas()"
+    id="my-button"
+    type="submit"
+    class="btn btn-primary">
+    <i class="bi bi-envelope-open-fill"></i>&nbsp; Mover Registros
+  </button>
+  <hr />
+</h4>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Sexo</th>
+      <th>Email</th>
+      <th>Compañia</th>
+      <th>Saldo</th>
+      <th>Estatus</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for persona in listaRegistros %}
+    <tr id="filaPersona_{{ persona.id_persona  }}">
+      <th>
+        {{ loop.index}} ).
+        <input
+          style="border: 1px solid #888"
+          class="form-check-input checkbox"
+          type="checkbox"
+          name="checkbox_persona[]"
+          value="{{ persona.id_persona}}"
+          id="{{persona.id_persona }}" />
+      </th>
+      <td>{{ persona.nombre}}</td>
+      <td>{{ persona.sexo}}</td>
+      <td>{{ persona.email}}</td>
+      <td>{{ persona.company}}</td>
+      <td>{{ persona.saldo}}</td>
+      <td>{{ persona.activo}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+
+<!-- js-->
+{% block customJS %}
+
+<script>
+  async function procesarPersonas() {
+    //Procesando los ids de personas seleccionadas
+    var checkboxes = document.getElementsByName("checkbox_persona[]");
+    var ids_seleccionados = []; // Declaración de la variable
+
+    for (var i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        // Agregar el valor del checkbox a la variable ids_seleccionados
+        ids_seleccionados.push(checkboxes[i].value);
+      }
+    }
+
+    //console.log(ids_seleccionados);
+
+    try {
+      const response = await fetch("/procesar-personas-seleccionada", {
+        method: "POST",
+        body: JSON.stringify({ ids: ids_seleccionados }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const jsonResponse = await response.json();
+
+        if (jsonResponse && jsonResponse.idsProcesados) {
+          let idsConsig = jsonResponse.idsProcesados;
+          //console.log(idsConsig);
+
+          idsConsig.forEach((idElement) => {
+            // console.log(idElement);
+            document.querySelector("#filaPersona_" + idElement).remove();
+          });
+          console.log("la acción fue ejecutada con éxito");
+        } else {
+          console.log("La respuesta del servidor no es válida.");
+        }
+      } else {
+        console.log("Error al procesar el formulario: " + response.status);
+      }
+    } catch (error) {
+      console.log("Error al procesar el formulario:", error);
+    } finally {
+      console.log("peticion finalizada.");
+    }
+  }
+</script>
+
+{% endblock %}

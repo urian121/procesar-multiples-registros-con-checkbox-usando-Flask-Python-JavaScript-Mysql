@@ -1,0 +1,35 @@
+{% extends 'index.html' %} {% block body %}
+<form action="/procesar-ejemplo1" method="POST">
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="manzana" />
+  Manzana<br />
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="pera" />
+  Pera<br />
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="naranja" />
+  Naranja<br />
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="banano" />
+  Banano<br />
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="piña" />
+  Piña<br />
+  <input type="submit" class="btn btn-primary" value="Enviar frutas" />
+</form>
+{% endblock %}

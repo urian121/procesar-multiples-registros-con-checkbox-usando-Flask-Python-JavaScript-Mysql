@@ -1,0 +1,63 @@
+{% extends 'index.html' %} {% block body %}
+
+<form id="my-form" method="post">
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="manzana" />
+  Manzana<br />
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="pera" />
+  Pera<br />
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="naranja" />
+  Naranja<br />
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="banano" />
+  Banano<br />
+  <input
+    type="checkbox"
+    class="form-check-input"
+    name="frutas[]"
+    value="piña" />
+  Piña<br />
+</form>
+<button class="btn btn-primary" id="my-button">Procesar formulario</button>
+
+{% endblock %} {% block customJS %}
+
+<script>
+  /**Segundo ejemplo */
+  document
+    .getElementById("my-button")
+    .addEventListener("click", function (event) {
+      event.preventDefault(); // Evitar que el formulario se envíe automáticamente
+      console.log(new FormData(document.getElementById("my-form")));
+      fetch("/procesar-ejemplo2", {
+        method: "POST",
+        body: new FormData(document.getElementById("my-form")),
+      })
+        .then(function (response) {
+          if (response.ok) {
+            console.log(response);
+            // Manejar la respuesta del servidor aquí
+          } else {
+            console.log("Error al procesar el formulario: " + response.status);
+          }
+        })
+        .catch(function (error) {
+          console.log("Error al procesar el formulario:", error);
+        });
+    });
+</script>
+{% endblock %}
