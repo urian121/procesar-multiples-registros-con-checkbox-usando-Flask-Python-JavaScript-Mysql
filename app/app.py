@@ -65,7 +65,12 @@ def procesarCheckboxPersona():
 
             conexion_MySQLdb = connectionBD()  # Hago instancia a mi conexion desde la funcion
             cur = conexion_MySQLdb.cursor(dictionary=True)
-
+            '''
+            cur.execute('DELETE FROM personas WHERE id_persona=%s', (idconsignacion,))
+            cur.execute('DELETE FROM personas WHERE id_persona IN=%s', (idconsignacion,))
+            conexion_MySQLdb.commit()
+            '''
+    
             cur.execute("""
                 UPDATE personas
                 SET 
