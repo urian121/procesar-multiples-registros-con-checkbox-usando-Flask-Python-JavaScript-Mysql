@@ -44,7 +44,7 @@ def procesar3():
     conexion_MySQLdb = connectionBD()  # Hago instancia a mi conexion desde la funcion
     mycursor = conexion_MySQLdb.cursor(dictionary=True)
 
-    querySQL = ("SELECT * FROM personas WHERE activo = 1 ")
+    querySQL = ("SELECT * FROM personas")
     mycursor.execute(querySQL)
     listaRegistros = mycursor.fetchall()
     mycursor.close()  # cerrrando conexion SQL
@@ -65,12 +65,14 @@ def procesarCheckboxPersona():
 
             conexion_MySQLdb = connectionBD()  # Hago instancia a mi conexion desde la funcion
             cur = conexion_MySQLdb.cursor(dictionary=True)
+          
             '''
-            cur.execute('DELETE FROM personas WHERE id_persona=%s', (idconsignacion,))
-            cur.execute('DELETE FROM personas WHERE id_persona IN=%s', (idconsignacion,))
+            #Si lo que deseas es Borrar multiple registros aqui el ejemplo
+            #cur.execute('DELETE FROM personas WHERE id_persona IN (%s)' % ','.join(map(str, idconsignacion)))
+            cur.execute('DELETE FROM personas WHERE id_persona IN (%s)' % idconsignacion)
             conexion_MySQLdb.commit()
             '''
-    
+
             cur.execute("""
                 UPDATE personas
                 SET 
@@ -78,6 +80,7 @@ def procesarCheckboxPersona():
                 WHERE id_persona =%s
                 """, (0, idconsignacion))
             conexion_MySQLdb.commit()
+
             cur.close()  # cerrando conexion de la consulta sql
             conexion_MySQLdb.close()  # cerrando conexion de la BD
         return jsonify({"idsProcesados": idsConsigChecked})
