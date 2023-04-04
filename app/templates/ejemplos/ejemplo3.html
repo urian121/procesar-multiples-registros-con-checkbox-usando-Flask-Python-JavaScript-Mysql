@@ -43,7 +43,13 @@
       <td>{{ persona.email}}</td>
       <td>{{ persona.company}}</td>
       <td>{{ persona.saldo}}</td>
-      <td>{{ persona.activo}}</td>
+      <td>
+        {{ persona.activo}} {% if(persona.activo==1) %}
+        <i class="bi bi-check-all" style="color: green"></i>
+        {% else %}
+        <i class="bi bi-check-all" style="color: crimson"></i>
+        {% endif%}
+      </td>
     </tr>
     {% endfor %}
   </tbody>
